@@ -2,10 +2,12 @@ package com.example.onboardingscreen;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,6 +24,9 @@ public class BoardingFragment extends Fragment {
     private CardView cardView;
 
     private CustomVideoView customVideoView;
+
+    private int width,height;
+    private int mWidth,mHeight;
 
     int currentPosition = 0;
 
@@ -47,12 +52,37 @@ public class BoardingFragment extends Fragment {
         title.setText(pageTitle);
 
 
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        requireActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int screenWidth = displayMetrics.widthPixels;
+
+        // Set Width / height based on device screen width
+        if (screenWidth >= 1080) {
+            // Large screen (e.g., large phones)
+            mWidth = 650;
+            mHeight = 800;
+            width  = 800;
+            height = 800;
+        } else if (screenWidth >= 720) {
+            // Normal screen (e.g., most phones)
+            mWidth = 550;
+            mHeight = 600;
+            width  = 700;
+            height = 700;
+        } else {
+            // Small screen (e.g., small phones)
+            mWidth = 450;
+            mHeight = 500;
+            width  = 500;
+            height = 500;
+        }
+
         // TODO : RESIZE VIDEO TO 400 ( Width ) * 500 ( Height )  &&  500 ( Width ) * 500 ( Height )
         if(position >= 1){
-            customVideoView  = new CustomVideoView(requireContext(),400,500);
+            customVideoView  = new CustomVideoView(requireContext(),mWidth,mHeight);
             cardView.addView(customVideoView);
         } else {
-            customVideoView  = new CustomVideoView(requireContext(),500,500);
+            customVideoView  = new CustomVideoView(requireContext(),width,height);
             cardView.addView(customVideoView);
             Log.d("TAG","Position 1 called");
         }
